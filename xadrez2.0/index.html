@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xadrez Pro - Edição Definitiva</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="start-screen" class="overlay start-overlay">
+        <div class="modal start-modal">
+            <h1 class="title">♟️ Xadrez Pro</h1>
+            <p class="subtitle">Desafie a Inteligência Artificial ou um amigo</p>
+            <button class="start-btn" onclick="startGame()">Começar Partida</button>
+        </div>
+    </div>
+
+    <div class="header-container">
+        <div id="status">Vez das Brancas</div>
+        
+        <select id="game-mode" class="modo-jogo">
+            <option value="human">2 Jogadores (Local)</option>
+            <option value="ai-easy">Contra IA (Fácil)</option>
+            <option value="ai-medium">Contra IA (Médio)</option>
+            <option value="ai-hard">Contra IA (Difícil)</option>
+            <option value="ai-pro">Contra IA (Profissional)</option>
+        </select>
+
+        <button class="btn-empate" onclick="abrirOferecerEmpate()">Oferecer Empate</button>
+    </div>
+    
+    <div class="game-layout">
+        <div class="board-area">
+            <div class="clock" id="clock-black">10:00</div>
+            <div id="chessboard"></div>
+            <div class="clock active-clock" id="clock-white">10:00</div>
+        </div>
+
+        <div class="history-panel">
+            <h3>Histórico de Jogadas</h3>
+            <ul id="moves-list"></ul>
+        </div>
+    </div>
+
+    <div id="promotion-overlay" class="overlay">
+        <div class="modal">
+            <h3 style="color: #2c3e50; margin-top: 0;">Promoção do Peão!</h3>
+            <p style="color: #7f8c8d; margin-bottom: 20px;">Escolha a peça desejada:</p>
+            <div id="promotion-options"></div>
+        </div>
+    </div>
+
+    <div id="draw-overlay" class="overlay">
+        <div class="modal">
+            <h3 id="draw-text">Pedido de Empate</h3>
+            <div class="btn-group">
+                <button onclick="aceitarEmpate()" style="background: #27ae60;">Aceitar</button>
+                <button onclick="recusarEmpate()" style="background: #e74c3c;">Recusar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="overlay">
+        <div class="modal">
+            <h2 id="winner-text">Fim de Jogo!</h2>
+            <button onclick="location.reload()" style="background: #2980b9;">Jogar Novamente</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
