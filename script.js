@@ -1,0 +1,101 @@
+/* Configurações Globais */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2c3e50;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cabeçalho */
+.header-container { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+
+#status {
+    color: white; font-size: 20px; padding: 10px 25px;
+    background: rgba(0,0,0,0.4); border-radius: 8px; text-transform: uppercase; font-weight: bold;
+}
+
+.modo-jogo {
+    padding: 10px 15px; font-size: 16px; border-radius: 8px;
+    background-color: #ecf0f1; border: 2px solid #bdc3c7;
+    cursor: pointer; font-weight: bold; color: #2c3e50; outline: none; transition: 0.3s;
+}
+.modo-jogo:hover { border-color: #2980b9; }
+
+.btn-empate {
+    padding: 10px 20px; font-size: 16px; background: #e67e22; color: white;
+    border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;
+}
+.btn-empate:hover { background: #d35400; }
+
+/* Layout Central */
+.game-layout { display: flex; gap: 30px; align-items: flex-start; }
+.board-area { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+
+/* Relógios */
+.clock {
+    background: #34495e; color: white; padding: 10px 20px;
+    font-size: 24px; font-weight: bold; border-radius: 8px; width: 100px; text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s;
+}
+.active-clock { background: #27ae60; color: white; }
+
+/* Histórico de Jogadas */
+.history-panel {
+    background: #ecf0f1; width: 250px; height: 580px; border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow-y: auto; padding: 15px; box-sizing: border-box;
+}
+.history-panel h3 { margin-top: 0; text-align: center; color: #2c3e50; border-bottom: 2px solid #bdc3c7; padding-bottom: 10px; }
+#moves-list { list-style: none; padding: 0; margin: 0; font-size: 16px; color: #333; }
+#moves-list li { padding: 8px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; }
+#moves-list li:nth-child(even) { background: #f9f9f9; }
+
+/* Tabuleiro */
+#chessboard {
+    display: grid; grid-template-columns: repeat(8, 65px); grid-template-rows: repeat(8, 65px);
+    border: 8px solid #34495e; box-shadow: 0 15px 35px rgba(0,0,0,0.5); background-color: #ecf0f1;
+}
+
+.square { 
+    width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; 
+    font-size: 45px; cursor: pointer; user-select: none; position: relative; 
+}
+.white { background-color: #ecf0f1; }
+.black { background-color: #95a5a6; }
+.selected { background-color: #f1c40f !important; }
+
+/* Guias Visuais */
+.possible-move::after { content: ''; width: 18px; height: 18px; background: rgba(0,0,0,0.15); border-radius: 50%; position: absolute; }
+.has-enemy { box-shadow: inset 0 0 0 6px rgba(231, 76, 60, 0.5); }
+.has-enemy::after { display: none; }
+
+/* Notação Algébrica */
+.coord-rank { position: absolute; top: 3px; left: 4px; font-size: 12px; font-weight: bold; pointer-events: none; }
+.coord-file { position: absolute; bottom: 1px; right: 4px; font-size: 12px; font-weight: bold; pointer-events: none; }
+.white .coord-rank, .white .coord-file { color: #95a5a6; }
+.black .coord-rank, .black .coord-file { color: #ecf0f1; }
+
+/* Modais (Telas Sobrepostas) */
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
+.start-overlay { display: flex; } /* Ativo por padrão na carga da página */
+
+.modal { background: white; padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+.modal h2, .modal h3 { margin-top: 0; color: #2c3e50; }
+
+.btn-group, #promotion-options { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+
+/* Tela de Início Específica */
+.start-modal { padding: 60px 80px; background: linear-gradient(135deg, #ffffff, #ecf0f1); border: 4px solid #34495e; }
+.start-modal .title { font-size: 45px; color: #2c3e50; margin-bottom: 10px; margin-top: 0; }
+.start-modal .subtitle { font-size: 18px; color: #7f8c8d; margin-bottom: 35px; }
+.start-btn { font-size: 22px; padding: 18px 50px; background: #2980b9; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4); }
+.start-btn:hover { background: #3498db; transform: scale(1.05); }
+
+/* Botões da Promoção e Modais em Geral */
+.promo-btn { font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; font-size: 50px; width: 80px; height: 80px; cursor: pointer; border: 3px solid #ddd; background: #f9f9f9; border-radius: 12px; color: #333; transition: all 0.2s; }
+.promo-btn:hover { background: #ecf0f1; border-color: #27ae60; transform: scale(1.05); }
+.modal button:not(.promo-btn):not(.start-btn) { padding: 12px 25px; font-size: 18px; cursor: pointer; color: white; background: #27ae60; border: none; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+.modal button:not(.promo-btn):not(.start-btn):hover { filter: brightness(1.1); }
