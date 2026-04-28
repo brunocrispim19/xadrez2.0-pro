@@ -27,10 +27,27 @@ let moveCount = 1;
 let tempoBrancas = 600, tempoPretas = 600, timer;
 
 
+
 // INTERFACE E RELÓGIO
+
 
 function startGame() {
     document.getElementById('start-screen').style.display = 'none';
+}
+
+function desistir() {
+    // Abre a tela personalizada em vez do alert do navegador
+    document.getElementById('resign-overlay').style.display = 'flex';
+}
+
+function confirmarDesistencia() {
+    document.getElementById('resign-overlay').style.display = 'none';
+    const vencedor = turn === 'white' ? 'PRETAS' : 'BRANCAS';
+    showGameOver(`${vencedor} (Por Desistência)`);
+}
+
+function cancelarDesistencia() {
+    document.getElementById('resign-overlay').style.display = 'none';
 }
 
 function formatarTempo(segundos) {
@@ -69,7 +86,9 @@ function registrarHistorico(peca, fR, fC, tR, tC, capturou, isXeque, isMate) {
 }
 
 
+
 // LÓGICA DO MOTOR DE XADREZ
+
 
 function getPieceColor(piece) {
     if (!piece) return null;
@@ -177,7 +196,9 @@ function isInsufficientMaterial(board) {
 }
 
 
+
 // EXCEÇÕES DE FLUXO E MODAIS
+
 
 function abrirMenuPromocao(cor) {
     return new Promise((resolve) => {
@@ -206,7 +227,9 @@ function showGameOver(winner) {
 }
 
 
+
 // EXECUÇÃO DO TURNO
+
 
 async function executarMovimento(fR, fC, tR, tC, sPiece) {
     let capturedPiece = boardLayout[tR][tC];
@@ -293,7 +316,9 @@ function finalizarTurno(pecaMovida, fR, fC, tR, tC, capturedPiece) {
 }
 
 
+
 // INTELIGÊNCIA ARTIFICIAL: AVALIAÇÃO POSICIONAL E MINIMAX
+
 
 function evaluateBoard(board) {
     let totalEvaluation = 0;
@@ -402,11 +427,11 @@ function playAI() {
     if (mode === 'human') return;
 
     let moves = [];
-    for (let r=0; r<8; r++) {
-        for (let c=0; c<8; c++) {
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
             if (getPieceColor(boardLayout[r][c]) === 'black') {
-                for (let tr=0; tr<8; tr++) {
-                    for (let tc=0; tc<8; tc++) {
+                for (let tr = 0; tr < 8; tr++) {
+                    for (let tc = 0; tc < 8; tc++) {
                         if (isValidMove(r, c, tr, tc, boardLayout[r][c])) {
                             moves.push({ fR: r, fC: c, tR: tr, tC: tc, piece: boardLayout[r][c] });
                         }
@@ -432,17 +457,24 @@ function playAI() {
             else if (mode === 'ai-hard') {
                 if (target) score += (pVals[target] || 0) * 10;
                 let sB = boardLayout.map(row => [...row]);
-                sB[m.tR][m.tC] = m.piece; sB[m.fR][m.fC] = '';
+                sB[m.tR][m.tC] = m.piece;
+                sB[m.fR][m.fC] = '';
                 let atk = false;
-                for(let r=0; r<8; r++) for(let c=0; c<8; c++) 
-                    if(getPieceColor(sB[r][c]) === 'white' && isPseudoLegalMove(r, c, m.tR, m.tC, sB[r][c], sB)) atk = true;
+                for (let r = 0; r < 8; r++) {
+                    for (let c = 0; c < 8; c++) {
+                        if (getPieceColor(sB[r][c]) === 'white' && isPseudoLegalMove(r, c, m.tR, m.tC, sB[r][c], sB)) {
+                            atk = true;
+                        }
+                    }
+                }
                 if (atk) score -= (pVals[m.piece] || 0) * 10; else score += 5;
                 if (m.tR >= 3 && m.tR <= 4 && m.tC >= 3 && m.tC <= 4) score += 2;
                 score += Math.random(); 
             }
             if (score > bestScore) { bestScore = score; bestMove = m; }
         }
-        setTimeout(() => executarMovimento(bestMove.fR, bestMove.fC, bestMove.tR, bestMove.tC, bestMove.piece), 500);
+        
+        setTimeout(() => executarMovimento(bestMove.fR, bestMove.fC, bestMove.tR, bestMove.tC, bestMove.piece), 2000);
     } 
     else if (mode === 'ai-pro' || mode === 'ai-gm') {
         const DEPTH = mode === 'ai-gm' ? 4 : 3; 
@@ -451,6 +483,8 @@ function playAI() {
         statusElement.style.color = mode === 'ai-gm' ? '#9b59b6' : '#f1c40f'; 
         
         setTimeout(() => {
+            const tempoInicio = Date.now(); 
+
             let bestScore = -Infinity;
             let bestMoves = [];
 
@@ -470,13 +504,22 @@ function playAI() {
             }
 
             bestMove = bestMoves[Math.floor(Math.random() * bestMoves.length)];
-            executarMovimento(bestMove.fR, bestMove.fC, bestMove.tR, bestMove.tC, bestMove.piece);
+            
+            const tempoCalculo = Date.now() - tempoInicio;
+            const tempoDeEspera = Math.max(0, 2000 - tempoCalculo);
+            
+            setTimeout(() => {
+                executarMovimento(bestMove.fR, bestMove.fC, bestMove.tR, bestMove.tC, bestMove.piece);
+            }, tempoDeEspera);
+
         }, 50); 
     }
 }
 
 
+
 // INTERAÇÃO DO USUÁRIO E RENDERIZAÇÃO DOM
+
 
 async function handleSquareClick(row, col) {
     if (turn === 'black' && gameModeSelect.value !== 'human') return;
@@ -503,9 +546,13 @@ function createBoard() {
     const possibleMoves = [];
     if (selectedSquare) {
         const p = boardLayout[selectedSquare.row][selectedSquare.col];
-        for (let r = 0; r < 8; r++) 
-            for (let c = 0; c < 8; c++) 
-                if (isValidMove(selectedSquare.row, selectedSquare.col, r, c, p)) possibleMoves.push({ r, c });
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                if (isValidMove(selectedSquare.row, selectedSquare.col, r, c, p)) {
+                    possibleMoves.push({ r, c });
+                }
+            }
+        }
     }
 
     const colLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -533,5 +580,5 @@ function createBoard() {
     }
 }
 
-// Inicializa a renderização do tabuleiro
+
 createBoard();
