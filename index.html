@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xadrez Pro - Edição Definitiva</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Xadrez Pro - Edição Grandmaster</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
@@ -28,7 +28,10 @@
             <option value="ai-gm">Contra IA (Grandmaster 👑)</option>
         </select>
 
-        <button class="btn-empate" onclick="abrirOferecerEmpate()">Oferecer Empate</button>
+        <div class="button-group">
+            <button class="btn-empate" onclick="abrirOferecerEmpate()">Oferecer Empate</button>
+            <button class="btn-desistir" onclick="desistir()">Desistir</button>
+        </div>
     </div>
     
     <div class="game-layout">
@@ -47,14 +50,15 @@
     <div id="promotion-overlay" class="overlay">
         <div class="modal">
             <h3 style="color: #2c3e50; margin-top: 0;">Promoção do Peão!</h3>
-            <p style="color: #7f8c8d; margin-bottom: 20px;">Escolha a peça desejada:</p>
+            <p style="color: #7f8c8d; margin-bottom: 20px;">Escolha a sua nova peça:</p>
             <div id="promotion-options"></div>
         </div>
     </div>
 
     <div id="draw-overlay" class="overlay">
         <div class="modal">
-            <h3 id="draw-text">Pedido de Empate</h3>
+            <h3 id="draw-text" style="color: #2c3e50; margin-top: 0;">Pedido de Empate</h3>
+            <p style="color: #7f8c8d; margin-bottom: 20px;">O adversário aceita o empate?</p>
             <div class="btn-group">
                 <button onclick="aceitarEmpate()" style="background: #27ae60;">Aceitar</button>
                 <button onclick="recusarEmpate()" style="background: #e74c3c;">Recusar</button>
@@ -62,13 +66,24 @@
         </div>
     </div>
 
-    <div id="game-over-screen" class="overlay">
+    <div id="resign-overlay" class="overlay">
         <div class="modal">
-            <h2 id="winner-text">Fim de Jogo!</h2>
-            <button onclick="location.reload()" style="background: #2980b9;">Jogar Novamente</button>
+            <h3 style="color: #c0392b; margin-top: 0;">Desistir da Partida?</h3>
+            <p style="color: #7f8c8d; margin-bottom: 20px;">Você está prestes a declarar derrota. Tem certeza?</p>
+            <div class="btn-group">
+                <button onclick="confirmarDesistencia()" style="background: #c0392b;">Sim, Desistir</button>
+                <button onclick="cancelarDesistencia()" style="background: #95a5a6;">Cancelar</button>
+            </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <div id="game-over-screen" class="overlay">
+        <div class="modal">
+            <h2 id="winner-text" style="color: #2c3e50;">Fim de Jogo!</h2>
+            <button onclick="location.reload()" class="start-btn">Nova Partida</button>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
 </body>
 </html>
